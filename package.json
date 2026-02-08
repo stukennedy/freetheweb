@@ -1,0 +1,19 @@
+{
+  "name": "freetheweb",
+  "version": "1.0.0",
+  "description": "A manifesto site to free the web from SPA shackles and return to hypermedia",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "hono": "^4.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240529.0",
+    "typescript": "^5.4.5",
+    "wrangler": "^3.57.0"
+  }
+}

@@ -1,0 +1,9 @@
+name = "freetheweb"
+main = "src/index.tsx"
+compatibility_date = "2024-01-01"
+
+# KV namespace for storing signatures
+# Uncomment and configure when ready to deploy:
+# [[kv_namespaces]]
+# binding = "SIGNATURES"
+# id = "your-kv-namespace-id"
