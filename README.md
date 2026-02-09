@@ -1,4 +1,4 @@
-# Free The Web 🌐
+# Free The Web
 
 **A manifesto site to free the web from SPA shackles and return to hypermedia.**
 
@@ -8,12 +8,12 @@ The web was built on hypermedia. We broke it with SPAs. It's time to fix it.
 
 This is a movement website that argues for returning to hypermedia-driven web development over the SPA-dominated landscape we live in today. It's built to **practice what it preaches**:
 
-- ✅ Server-side rendering with Hono JSX
-- ✅ HTMX for interactivity (zero JavaScript frameworks)
-- ✅ Progressive enhancement
-- ✅ Real URLs for every view
-- ✅ HTML as the application state
-- ✅ AI-accessible by default (LLMs can read and interact with it)
+- Server-side rendering with Hono JSX
+- HTMX for interactivity (zero JavaScript frameworks)
+- Progressive enhancement
+- Real URLs for every view
+- HTML as the application state
+- AI-accessible by default (LLMs can read and interact with it)
 
 ## Tech Stack
 
@@ -28,19 +28,20 @@ This is a movement website that argues for returning to hypermedia-driven web de
 ```
 freetheweb/
 ├── src/
-│   ├── index.tsx              # Main Hono app with routes
+│   ├── index.tsx              # Main Hono app with routes + API endpoints
 │   └── components/
-│       ├── Layout.tsx         # HTML shell with Tailwind + HTMX
-│       ├── Hero.tsx           # ASCII art header + tagline
-│       ├── Problem.tsx        # What SPAs broke
-│       ├── Manifesto.tsx      # The 5 principles
-│       ├── AIAngle.tsx        # Why hypermedia is AI-native
-│       ├── SignForm.tsx       # HTMX-powered signature form
-│       └── Proof.tsx          # "This site has 0 JS frameworks"
+│       ├── Layout.tsx         # HTML shell, fonts, Tailwind config, animations, grain overlay
+│       ├── Hero.tsx           # Massive Instrument Serif hero typography
+│       ├── Problem.tsx        # What SPAs broke — numbered editorial list
+│       ├── Manifesto.tsx      # The 5 principles with ghost numbers
+│       ├── AIAngle.tsx        # Terminal window + why hypermedia is AI-native
+│       ├── SignForm.tsx       # HTMX-powered signature form + success state
+│       └── Proof.tsx          # Stats row, resources, footer
+├── public/                    # Static assets (favicon)
 ├── package.json
 ├── tsconfig.json
 ├── wrangler.toml              # Cloudflare Workers config
-└── README.md
+└── CLAUDE.md
 ```
 
 ## Local Development
@@ -58,76 +59,75 @@ bun install
 
 # Run development server
 bun run dev
+
+# Type checking
+bun run typecheck
 ```
 
 Visit `http://localhost:8787` to see the site.
 
 ## Deployment
 
-### Option 1: Deploy to Cloudflare Workers (Recommended)
+### Deploy to Cloudflare Workers
 
-1. **Create a Cloudflare account** at [cloudflare.com](https://cloudflare.com)
-
-2. **Authenticate Wrangler:**
+1. **Authenticate Wrangler:**
    ```bash
    bunx wrangler login
    ```
 
-3. **Create a KV namespace for signatures:**
+2. **Create a KV namespace for signatures:**
    ```bash
    bunx wrangler kv:namespace create "SIGNATURES"
    ```
-   
-   This will output a namespace ID. Update `wrangler.toml`:
+
+   Update `wrangler.toml` with the namespace ID:
    ```toml
    [[kv_namespaces]]
    binding = "SIGNATURES"
    id = "your-namespace-id-here"
    ```
 
-4. **Deploy:**
+3. **Deploy:**
    ```bash
    bun run deploy
    ```
 
-5. **Set up a custom domain** (optional):
-   - In the Cloudflare dashboard, go to your Worker
-   - Add a custom domain (e.g., `freetheweb.dev`)
+4. **Custom domain** (optional): In the Cloudflare dashboard, add a custom domain to your Worker (e.g., `freetheweb.dev`).
 
-### Option 2: Self-Host
+Without KV configured, signatures use in-memory storage (lost on redeploy).
 
-Since this is built on Web Standards (HTTP + HTML), you can run it anywhere that supports JavaScript:
+## Design Aesthetic
 
-- Node.js with an adapter
-- Deno Deploy
-- Bun with `Bun.serve()`
-- Any edge runtime
+**"Luxury editorial manifesto"** — Monocle magazine meets underground zine.
+
+- **Instrument Serif** (italic) for display headings — editorial tension against monospace
+- **Outfit** for body text — clean geometric sans
+- **JetBrains Mono** for code, labels, and terminal elements
+- **Acid chartreuse** (`#e0ff00`) accent on deep ink black (`#08080c`)
+- **Red** (`#ff3333`) for danger moments (SPA criticism)
+- Film grain overlay via SVG feTurbulence
+- Scroll-triggered reveal animations (CSS + IntersectionObserver)
+- Ghost numbers behind manifesto principles
+- Terminal window component with title bar chrome
+- Gradient accent separator lines between sections
+- Custom scrollbar, selection highlight, animated link underlines
 
 ## The Manifesto
 
 ### 5 Principles
 
 1. **HTML over JSON** — The server should return documents, not data blobs
-2. **Server authority over client state** — The server knows the state
-3. **Progressive enhancement over JavaScript dependency** — The web works without JS
-4. **Real URLs over client-side routes** — Every view should have a real URL
-5. **Browser as hypermedia client over application runtime** — Let the browser do its job
+2. **Server Authority over Client State** — The server knows the state
+3. **Progressive Enhancement over JS Dependency** — The web works without JS
+4. **Real URLs over Client Routes** — Every view should have a real URL
+5. **Hypermedia Client over App Runtime** — Let the browser do its job
 
 ### The AI Angle
 
-AI agents can read HTML. They can follow links. They can submit forms.  
+AI agents can read HTML. They can follow links. They can submit forms.
 **They cannot execute your React components.**
 
 Hypermedia is natively AI-compatible. SPAs are not.
-
-## Design Aesthetic
-
-- **Dark theme** with terminal/developer feel
-- **JetBrains Mono** for monospace headers
-- **Manrope** for body text
-- **Terminal green** (`#00ff41`) accent color
-- **Protest poster meets developer documentation** vibe
-- Generous whitespace, bold statements, ASCII art
 
 ## HTMX Features Demonstrated
 
@@ -136,32 +136,15 @@ Hypermedia is natively AI-compatible. SPAs are not.
 - DOM swapping with `hx-target` and `hx-swap`
 - Progressive enhancement (works without JS)
 
-## Why This Matters
-
-We've spent a decade building increasingly complex client-side applications, creating problems that didn't exist before:
-
-- Broken URLs
-- Bloated bundles
-- Fragile state management
-- Accessibility nightmares
-- AI-hostile architectures
-- Developer burnout
-
-**Hypermedia is the answer.** It always was.
-
 ## Contributing
 
-This is an open manifesto. If you have ideas, improvements, or want to sign it:
-
-1. Fork the repo
-2. Make your changes
-3. Submit a PR
+This is an open manifesto. Fork it, improve it, submit a PR.
 
 Or just [sign the manifesto](https://freetheweb.dev#sign) and spread the word.
 
 ## License
 
-MIT - Do whatever you want with this. Copy it, fork it, use it as a template.
+MIT
 
 ## Credits
 
@@ -174,5 +157,4 @@ Inspired by:
 
 ---
 
-**The HTML IS the application.**  
-Let's free the web. 🌐
+**The HTML IS the application.**

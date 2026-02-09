@@ -38,3 +38,4 @@ coverage/
 .cache/
 .temp/
 node_modules/
+.playwright-mcp/

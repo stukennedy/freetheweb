@@ -1,42 +1,37 @@
 export const Hero = () => {
   return (
-    <section class="min-h-screen flex flex-col items-center justify-center px-6 py-20">
-      <div class="max-w-5xl w-full">
-        {/* ASCII Art Header */}
-        <pre class="ascii-art font-mono text-terminal text-xs sm:text-sm md:text-base lg:text-lg terminal-shadow mb-8 overflow-x-auto">
-{`
-███████╗██████╗ ███████╗███████╗    ████████╗██╗  ██╗███████╗    ██╗    ██╗███████╗██████╗ 
-██╔════╝██╔══██╗██╔════╝██╔════╝    ╚══██╔══╝██║  ██║██╔════╝    ██║    ██║██╔════╝██╔══██╗
-█████╗  ██████╔╝█████╗  █████╗         ██║   ███████║█████╗      ██║ █╗ ██║█████╗  ██████╔╝
-██╔══╝  ██╔══██╗██╔══╝  ██╔══╝         ██║   ██╔══██║██╔══╝      ██║███╗██║██╔══╝  ██╔══██╗
-██║     ██║  ██║███████╗███████╗       ██║   ██║  ██║███████╗    ╚███╔███╔╝███████╗██████╔╝
-╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝       ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚══╝╚══╝ ╚══════╝╚═════╝ 
-`}
-        </pre>
-        
-        {/* Tagline */}
-        <div class="space-y-6 text-center">
-          <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-            The web was built on <span class="text-terminal">hypermedia</span>.
-          </h1>
-          <h2 class="text-2xl md:text-4xl lg:text-5xl font-bold text-gray-400 leading-tight">
-            We broke it with <span class="line-through text-red-500">SPAs</span>.
-          </h2>
-          <p class="text-xl md:text-3xl lg:text-4xl font-bold text-white leading-tight">
-            It's time to <span class="text-terminal cursor-blink">fix it</span>
+    <section class="min-h-screen flex flex-col items-center justify-center px-6 relative">
+      <div class="absolute inset-0 pointer-events-none" aria-hidden="true"
+        style="background:radial-gradient(ellipse 80% 50% at 50% 20%, rgba(224,255,0,0.03) 0%, transparent 70%)" />
+
+      <div class="relative z-10 text-center">
+        <div class="mb-10 md:mb-14">
+          <div class="hero-reveal d0">
+            <span class="hero-type text-[#e8e6e3]">FREE</span>
+          </div>
+          <div class="hero-reveal d1 my-1 md:my-2">
+            <span class="font-mono text-muted text-xs md:text-base tracking-[0.4em] uppercase">the</span>
+          </div>
+          <div class="hero-reveal d2">
+            <span class="hero-type text-accent glow">WEB.</span>
+          </div>
+        </div>
+
+        <div class="hero-reveal d3 max-w-2xl mx-auto">
+          <p class="text-base md:text-2xl font-light leading-relaxed text-dim">
+            The web was built on{' '}
+            <span class="text-[#e8e6e3] font-normal">hypermedia</span>.{' '}
+            We broke it with{' '}
+            <span class="text-danger line-through">SPAs</span>.
+            <br class="hidden md:block" />
+            {' '}It's time to{' '}
+            <span class="text-accent font-normal blink">fix it</span>
           </p>
         </div>
-        
-        {/* Call to action scroll indicator */}
-        <div class="mt-20 text-center">
-          <a 
-            href="#problem" 
-            class="inline-block text-terminal hover:text-white transition-colors duration-300 font-mono text-sm"
-          >
-            <div class="animate-bounce">
-              ↓ Scroll to begin ↓
-            </div>
-          </a>
+
+        <div class="hero-reveal d5 mt-24 md:mt-32 flex flex-col items-center gap-3">
+          <span class="font-mono text-muted text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+          <div class="scroll-line" />
         </div>
       </div>
     </section>

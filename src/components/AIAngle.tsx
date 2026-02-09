@@ -1,69 +1,83 @@
 export const AIAngle = () => {
   return (
-    <section id="ai" class="min-h-screen flex items-center px-6 py-20 bg-gradient-to-br from-dark via-dark-lighter to-dark">
-      <div class="max-w-4xl mx-auto">
-        <div class="mb-12">
-          <span class="font-mono text-terminal text-sm">$ ./the-secret-weapon.sh</span>
-          <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mt-4 mb-6">
-            The AI Angle
-          </h2>
-          <p class="text-2xl md:text-3xl text-terminal font-bold">
+    <section id="ai" class="px-6 py-24 md:py-32">
+      <div class="sep mb-24 md:mb-32" />
+      <div class="max-w-3xl mx-auto">
+        <div class="sr">
+          <span class="font-mono text-accent text-xs tracking-wider">$ ./the-secret-weapon.sh</span>
+          <h2 class="font-serif italic text-4xl md:text-6xl mt-4 mb-3">The AI Angle</h2>
+          <p class="text-accent text-xl md:text-2xl font-medium mb-16 md:mb-20">
             This is the future, and SPAs are obsolete.
           </p>
         </div>
-        
-        <div class="space-y-8 text-lg md:text-xl text-gray-300">
-          <div class="p-8 bg-dark border-2 border-terminal rounded-lg">
-            <p class="text-2xl md:text-3xl font-bold text-white mb-4 font-mono">
-              {'> AI agents can read HTML.'}<br/>
-              {'> They can follow links.'}<br/>
-              {'> They can submit forms.'}<br/>
-              {'> '}<span class="text-red-500">They cannot execute your React components.</span>
-            </p>
+
+        {/* Terminal window */}
+        <div class="sr bg-surface rounded-lg border border-rule overflow-hidden mb-16">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-rule bg-elevated/40">
+            <span class="w-2.5 h-2.5 rounded-full bg-danger/40" />
+            <span class="w-2.5 h-2.5 rounded-full bg-accent/20" />
+            <span class="w-2.5 h-2.5 rounded-full bg-accent/40" />
+            <span class="ml-3 font-mono text-[11px] text-muted">the-truth.sh</span>
           </div>
-          
-          <div class="space-y-6">
-            <p class="text-xl leading-relaxed">
-              LLMs interact with the web through <strong class="text-terminal">HTTP + HTML</strong> — exactly what hypermedia is. They make GET requests, parse HTML, follow links, and submit forms. It's how they were designed to work.
-            </p>
-            
-            <p class="text-xl leading-relaxed">
-              SPAs require a <strong class="text-red-500">JavaScript runtime</strong> to render content. LLMs don't have one. They can't `npm install`. They can't execute your React components. Your SPA might as well not exist to them.
-            </p>
-            
-            <div class="my-8 p-6 bg-dark-lighter rounded-lg border-l-4 border-terminal">
-              <h3 class="text-2xl font-bold text-terminal mb-4">Why This Matters</h3>
-              <ul class="space-y-3 text-lg">
-                <li class="flex items-start gap-3">
-                  <span class="text-terminal text-2xl">✓</span>
-                  <span>Hypermedia is <strong>natively AI-compatible</strong> because content and controls are in the markup</span>
-                </li>
-                <li class="flex items-start gap-3">
-                  <span class="text-terminal text-2xl">✓</span>
-                  <span>The more we build with hypermedia, the more the web becomes an <strong>AI-accessible platform</strong></span>
-                </li>
-                <li class="flex items-start gap-3">
-                  <span class="text-terminal text-2xl">✓</span>
-                  <span>AI agents can <strong>use your app</strong> — book appointments, fill forms, retrieve data — without custom APIs</span>
-                </li>
-                <li class="flex items-start gap-3">
-                  <span class="text-terminal text-2xl">✓</span>
-                  <span>This isn't theoretical — it's happening <strong>right now</strong> with agentic AI tools</span>
-                </li>
-              </ul>
+          <div class="p-6 md:p-8 font-mono text-sm md:text-base leading-loose">
+            <p class="text-muted">$ curl https://your-spa.com</p>
+            <div class="mt-4 space-y-1">
+              <p>{'>'} AI agents can read HTML.</p>
+              <p>{'>'} They can follow links.</p>
+              <p>{'>'} They can submit forms.</p>
+              <p class="text-danger font-bold mt-3">{'>'} They cannot execute your React components.</p>
             </div>
-            
-            <p class="text-xl leading-relaxed">
-              Every SPA you build is a <strong>wall</strong> between your users and the AI tools they're starting to rely on. Every hypermedia app you build is a <strong>bridge</strong>.
-            </p>
-            
-            <div class="mt-8 p-8 bg-gradient-to-r from-terminal/10 to-transparent border-2 border-terminal rounded-lg">
-              <p class="text-2xl md:text-3xl font-bold text-white">
-                The future of the web is agentic. <br/>
-                <span class="text-terminal">Hypermedia is ready.</span><br/>
-                <span class="text-gray-500">SPAs are not.</span>
-              </p>
+          </div>
+        </div>
+
+        <div class="sr space-y-6 text-dim text-lg leading-relaxed mb-12">
+          <p>
+            LLMs interact with the web through{' '}
+            <strong class="text-accent font-semibold">HTTP + HTML</strong>{' '}
+            — exactly what hypermedia is. They make GET requests, parse HTML, follow links, and submit forms.
+          </p>
+          <p>
+            SPAs require a{' '}
+            <strong class="text-danger font-semibold">JavaScript runtime</strong>{' '}
+            to render content. LLMs don't have one. They can't execute your React components. Your SPA might as well not exist to them.
+          </p>
+        </div>
+
+        <div class="sr bg-surface border border-rule rounded-lg p-6 md:p-8 mb-12">
+          <h3 class="font-mono text-accent text-xs tracking-[0.2em] uppercase mb-6">Why This Matters</h3>
+          <div class="space-y-4">
+            <div class="flex gap-3 items-start">
+              <span class="text-accent text-sm font-mono mt-0.5 shrink-0">+</span>
+              <p class="text-dim">Hypermedia is <strong class="text-[#e8e6e3]">natively AI-compatible</strong> — content and controls are in the markup</p>
             </div>
+            <div class="flex gap-3 items-start">
+              <span class="text-accent text-sm font-mono mt-0.5 shrink-0">+</span>
+              <p class="text-dim">The more we build with hypermedia, the more the web becomes an <strong class="text-[#e8e6e3]">AI-accessible platform</strong></p>
+            </div>
+            <div class="flex gap-3 items-start">
+              <span class="text-accent text-sm font-mono mt-0.5 shrink-0">+</span>
+              <p class="text-dim">AI agents can <strong class="text-[#e8e6e3]">use your app</strong> — book, fill, retrieve — without custom APIs</p>
+            </div>
+            <div class="flex gap-3 items-start">
+              <span class="text-accent text-sm font-mono mt-0.5 shrink-0">+</span>
+              <p class="text-dim">This isn't theoretical — it's happening <strong class="text-[#e8e6e3]">right now</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sr">
+          <p class="text-dim text-lg leading-relaxed mb-10">
+            Every SPA you build is a wall between your users and the AI tools they rely on. Every hypermedia app you build is a bridge.
+          </p>
+
+          <div class="pl-6 border-l border-accent/30">
+            <p class="font-serif italic text-2xl md:text-3xl leading-snug">
+              The future of the web is agentic.
+              <br />
+              <span class="text-accent">Hypermedia is ready.</span>
+              <br />
+              <span class="text-muted">SPAs are not.</span>
+            </p>
           </div>
         </div>
       </div>

@@ -4,8 +4,10 @@
   "description": "A manifesto site to free the web from SPA shackles and return to hypermedia",
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
+    "dev": "tailwindcss -i src/styles.css -o public/styles.css --watch --minify & wrangler dev",
+    "build:css": "tailwindcss -i src/styles.css -o public/styles.css --minify",
+    "build": "bun run build:css",
+    "deploy": "bun run build && wrangler deploy",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -13,6 +15,8 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240529.0",
+    "@tailwindcss/cli": "^4.1.18",
+    "tailwindcss": "^4.1.18",
     "typescript": "^5.4.5",
     "wrangler": "^3.57.0"
   }
