@@ -15,20 +15,44 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 
+const SEED_COUNT = 42;
+const SIG_PREFIX = 'sig:';
+
 // Layout renderer — automatically prepends <!DOCTYPE html>
 app.use('*', jsxRenderer(({ children }) => <Layout>{children}</Layout>));
 
-// In-memory store for development (replace with KV in production)
-let signatureCount = 42; // Start with a seed number
-const signatures: Array<{ name: string; title?: string; timestamp: number }> = [];
+// In-memory fallback for local dev without KV
+let devCount = SEED_COUNT;
+
+async function getSignatureCount(kv: KVNamespace): Promise<number> {
+  const stored = await kv.get('count');
+  if (stored !== null) {
+    console.log(`[getSignatureCount] Cached count: ${stored}`);
+    return parseInt(stored);
+  }
+  // First run or count key missing — rebuild from actual entries
+  const list = await kv.list({ prefix: SIG_PREFIX });
+  const count = list.keys.length + SEED_COUNT;
+  await kv.put('count', count.toString());
+  console.log(`[getSignatureCount] Rebuilt count from ${list.keys.length} entries (with seed): ${count}`);
+  return count;
+}
+
+async function incrementSignatureCount(kv: KVNamespace): Promise<number> {
+  const current = await getSignatureCount(kv);
+  const next = current + 1;
+  await kv.put('count', next.toString());
+  console.log(`[incrementSignatureCount] ${current} -> ${next}`);
+  return next;
+}
 
 // Home page - the full manifesto
 app.get('/', async (c) => {
-  let count = signatureCount;
+  let count = devCount;
   if (c.env.SIGNATURES) {
-    const stored = await c.env.SIGNATURES.get('count');
-    count = stored ? parseInt(stored) : signatureCount;
+    count = await getSignatureCount(c.env.SIGNATURES);
   }
+  console.log(`[GET /] Signature count: ${count}`);
 
   return c.render(
     <>
@@ -36,8 +60,8 @@ app.get('/', async (c) => {
       <Problem />
       <Manifesto />
       <HowItWorks />
-      <AIAngle />
       <SignForm count={count} />
+      <AIAngle />
       <Proof />
     </>
   );
@@ -45,11 +69,11 @@ app.get('/', async (c) => {
 
 // API: Get current signature count (for HTMX polling)
 app.get('/api/count', async (c) => {
-  let count = signatureCount;
+  let count = devCount;
   if (c.env.SIGNATURES) {
-    const stored = await c.env.SIGNATURES.get('count');
-    count = stored ? parseInt(stored) : signatureCount;
+    count = await getSignatureCount(c.env.SIGNATURES);
   }
+  console.log(`[GET /api/count] Polled count: ${count}`);
 
   return c.html(
     <>
@@ -66,7 +90,10 @@ app.post('/api/sign', async (c) => {
   const title = (formData.title as string) || undefined;
   const pledge = formData.pledge as string;
 
+  console.log(`[POST /api/sign] Attempt from: "${name}", title: "${title ?? 'none'}", pledge: ${!!pledge}`);
+
   if (!name || !pledge) {
+    console.log(`[POST /api/sign] Rejected: missing required fields`);
     return c.html(
       <div class="text-center py-8">
         <p class="text-danger text-lg mb-6">Please fill in all required fields.</p>
@@ -80,16 +107,21 @@ app.post('/api/sign', async (c) => {
     );
   }
 
+  let newCount: number;
   const signature = { name, title, timestamp: Date.now() };
-  signatures.push(signature);
-  signatureCount++;
 
   if (c.env.SIGNATURES) {
-    await c.env.SIGNATURES.put('count', signatureCount.toString());
-    await c.env.SIGNATURES.put(`signature:${signatureCount}`, JSON.stringify(signature));
+    const key = `${SIG_PREFIX}${Date.now()}-${crypto.randomUUID()}`;
+    await c.env.SIGNATURES.put(key, JSON.stringify(signature));
+    newCount = await incrementSignatureCount(c.env.SIGNATURES);
+    console.log(`[POST /api/sign] Stored "${name}" as ${key} — count now: ${newCount}`);
+  } else {
+    devCount++;
+    newCount = devCount;
+    console.log(`[POST /api/sign] Dev mode — in-memory count: ${newCount}`);
   }
 
-  return c.html(<SignFormSuccess name={name} newCount={signatureCount} />);
+  return c.html(<SignFormSuccess name={name} newCount={newCount} />);
 });
 
 // API: HTMX live demo endpoint
@@ -114,11 +146,11 @@ app.get('/api/demo', (c) => {
 
 // View source — full page HTML in a new tab
 app.get('/view-source', async (c) => {
-  let count = signatureCount;
+  let count = devCount;
   if (c.env.SIGNATURES) {
-    const stored = await c.env.SIGNATURES.get('count');
-    count = stored ? parseInt(stored) : signatureCount;
+    count = await getSignatureCount(c.env.SIGNATURES);
   }
+  console.log(`[GET /view-source] Count: ${count}`);
 
   // Render the actual page HTML
   const pageJsx = (
@@ -127,8 +159,8 @@ app.get('/view-source', async (c) => {
       <Problem />
       <Manifesto />
       <HowItWorks />
-      <AIAngle />
       <SignForm count={count} />
+      <AIAngle />
       <Proof />
     </Layout>
   );
@@ -157,8 +189,13 @@ app.get('/view-source', async (c) => {
 });
 
 // Health check
-app.get('/health', (c) => {
-  return c.json({ status: 'ok', signatures: signatureCount });
+app.get('/health', async (c) => {
+  let count = devCount;
+  if (c.env.SIGNATURES) {
+    count = await getSignatureCount(c.env.SIGNATURES);
+  }
+  console.log(`[GET /health] Status ok, signatures: ${count}`);
+  return c.json({ status: 'ok', signatures: count });
 });
 
 export default app;
